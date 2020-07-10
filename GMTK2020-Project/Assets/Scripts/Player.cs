@@ -4,22 +4,9 @@ using UnityEngine;
 
 namespace TMG.GMTK2020 
 {
-    public class Player : MonoBehaviour
+    public class Player : Character
     {
-        public int maxHealth;
-        public int maxControl;
-
-        public Dictionary<string, Stat> playerStats = new Dictionary<string, Stat>();
-
-		private void Awake()
-		{
-			playerStats.Add("Health", new Stat() { max = maxHealth, cur = maxHealth });
-			playerStats.Add("Control", new Stat() { max = maxControl, cur = maxControl });
-
-			BattleStateMachine.instance.stateChanged += Instance_stateChanged;
-		}
-
-		private void Instance_stateChanged(object sender, BattleState newState)
+		protected override void StateChanged(BattleState newState)
 		{
 			switch (newState)
 			{

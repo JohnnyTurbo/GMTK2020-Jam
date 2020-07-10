@@ -4,17 +4,19 @@ using UnityEngine;
 
 namespace TMG.GMTK2020
 {
-	public class Enemy : MonoBehaviour
+	public class Enemy : Character
 	{
-		public int maxHealth;
-		public int maxControl;
-
-		public Dictionary<string, Stat> enemyStats = new Dictionary<string, Stat>();
-
-		private void Awake()
+		protected override void StateChanged(BattleState newState)
 		{
-			enemyStats.Add("Health", new Stat() { max = maxHealth, cur = maxHealth });
-			enemyStats.Add("Control", new Stat() { max = maxControl, cur = maxControl });
+			switch (newState)
+			{
+				case BattleState.EnemyActionSelect:
+					Debug.Log("show enemy selction UI");
+					break;
+
+				default:
+					break;
+			}
 		}
 	}
 }

@@ -23,12 +23,12 @@ namespace TMG.GMTK2020
 
 		private void Start()
 		{
-			ChangeState(BattleState.PlayerActionSelect);
+			
 		}
 
 		public void BeginBattle()
 		{
-            
+			ChangeState(BattleState.PlayerActionSelect);
 		}
 
 		public void ChangeState(BattleState newState)
