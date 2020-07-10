@@ -21,16 +21,6 @@ namespace TMG.GMTK2020
 			curBattleState = BattleState.None;			
 		}
 
-		private void Start()
-		{
-			
-		}
-
-		public void BeginBattle()
-		{
-			ChangeState(BattleState.PlayerActionSelect);
-		}
-
 		public void ChangeState(BattleState newState)
 		{
 			if(curBattleState != newState)

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,15 +9,16 @@ namespace TMG.GMTK2020
     {
 		public int maxHealth;
 		public int maxControl;
+		public int actionAmount;
+		public Action characterAction;
 
-		public Dictionary<string, Stat> playerStats = new Dictionary<string, Stat>();
+		public Dictionary<string, Stat> charStats = new Dictionary<string, Stat>();
 
 		private void Awake()
 		{
-			playerStats.Add("Health", new Stat() { max = maxHealth, cur = maxHealth });
-			playerStats.Add("Control", new Stat() { max = maxControl, cur = maxControl });
-
-			
+			charStats.Add("Health", new Stat() { max = maxHealth, cur = maxHealth });
+			charStats.Add("Control", new Stat() { max = maxControl, cur = maxControl });
+			SetupAction();
 		}
 
 		private void Start()
@@ -29,9 +31,32 @@ namespace TMG.GMTK2020
 			StateChanged(newState);
 		}
 
+		protected virtual void SetupAction()
+		{
+			characterAction = new HealthAction(this, null, actionAmount, "Attack");
+		}
+
 		protected virtual void StateChanged(BattleState newState)
 		{
 
+		}
+
+		public void ModifyHealth(int amount)
+		{
+			charStats["Health"].cur += amount;
+			if(charStats["Health"].cur >= charStats["Health"].max)
+			{
+				charStats["Health"].cur = charStats["Health"].max;
+			}
+			else if(charStats["Health"].cur <= 0)
+			{
+				CharacterDead();
+			}
+		}
+
+		private void CharacterDead()
+		{
+			Debug.Log("Character: " + gameObject.name + " ran out of health!");
 		}
 	}
 }

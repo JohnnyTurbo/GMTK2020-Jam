@@ -6,6 +6,7 @@ namespace TMG.GMTK2020
 {
 	public class Enemy : Character
 	{
+
 		protected override void StateChanged(BattleState newState)
 		{
 			switch (newState)
