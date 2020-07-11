@@ -8,6 +8,7 @@ namespace TMG.GMTK2020
     {
 		protected override void StateChanged(BattleState newState)
 		{
+			base.StateChanged(newState);
 			switch (newState)
 			{
 				case BattleState.PlayerActionSelect:

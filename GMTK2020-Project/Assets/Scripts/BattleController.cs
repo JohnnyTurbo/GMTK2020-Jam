@@ -18,8 +18,17 @@ namespace TMG.GMTK2020
 
 		public void BeginBattle()
 		{
-			BattleStateMachine.instance.ChangeState(BattleState.PlayerActionSelect);
+			BattleStateMachine.instance.ChangeState(BattleState.RegisterCharacters);
+		}
 
+		public void RegisterCharacter(Character newCharacter)
+		{
+			battleCharacters.Add(newCharacter);
+		}
+
+		public void RemoveCharacter(Character characterToRemove)
+		{
+			battleCharacters.Remove(characterToRemove);
 		}
 
 		public void ExecuteActions()

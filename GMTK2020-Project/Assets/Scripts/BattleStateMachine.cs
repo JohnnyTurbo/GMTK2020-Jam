@@ -5,7 +5,15 @@ using UnityEngine;
 
 namespace TMG.GMTK2020
 {
-    public enum BattleState { PlayerActionSelect, PlayerActionPlayback, EnemyActionSelect, EnemyActionPlayback, None}
+    public enum BattleState {
+								RegisterCharacters,
+								PlayerActionSelect,
+								PlayerActionTargetSelect,
+								PlayerActionPlayback,
+								EnemyActionSelect,
+								EnemyActionPlayback,
+								None
+							}
 
     public class BattleStateMachine : MonoBehaviour
     {

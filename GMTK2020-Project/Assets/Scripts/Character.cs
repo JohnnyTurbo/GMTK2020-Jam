@@ -38,7 +38,15 @@ namespace TMG.GMTK2020
 
 		protected virtual void StateChanged(BattleState newState)
 		{
+			switch (newState)
+			{
+				case BattleState.RegisterCharacters:
+					BattleController.instance.RegisterCharacter(this);
+					break;
 
+				default:
+					break;
+			}
 		}
 
 		public void ModifyHealth(int amount)
