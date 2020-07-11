@@ -30,6 +30,7 @@ namespace TMG.GMTK2020
 		public override void Execute()
 		{
 			target?.ModifyHealth(amount);
+			//Debug.Log("Source: " + source.gameObject.name + " Target: " + target.gameObject.name + " Amount: " + amount);
 		}
 	}
 }

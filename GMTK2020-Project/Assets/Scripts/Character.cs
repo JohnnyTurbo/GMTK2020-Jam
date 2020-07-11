@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace TMG.GMTK2020
 {
-    public class Character : MonoBehaviour
+    public abstract class Character : MonoBehaviour
     {
 		public int maxHealth;
 		public int maxControl;
 		public int actionAmount;
 		public bool isControllable;
 		public Action characterAction;
-		public GameObject healthBarGO, controlBarGO;
+		public GameObject healthBarGO, controlBarGO, actionButtonGO;
 
 		public Dictionary<string, Stat> charStats = new Dictionary<string, Stat>();
 
@@ -53,12 +53,9 @@ namespace TMG.GMTK2020
 
 		public void ModifyHealth(int amount)
 		{
-			charStats["Health"].cur += amount;
-			if(charStats["Health"].cur >= charStats["Health"].max)
-			{
-				charStats["Health"].cur = charStats["Health"].max;
-			}
-			else if(charStats["Health"].cur <= 0)
+			charStats["Health"].ModifyCurStat(amount);
+			UIController.instance.UpdateHealthUI(this);
+			if(charStats["Health"].cur <= 0)
 			{
 				CharacterDead();
 			}
@@ -67,6 +64,7 @@ namespace TMG.GMTK2020
 		private void CharacterDead()
 		{
 			Debug.Log("Character: " + gameObject.name + " ran out of health!");
+			BattleController.instance.RemoveCharacter(this);
 		}
 	}
 }

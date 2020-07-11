@@ -9,6 +9,8 @@ namespace TMG.GMTK2020
 {
 	public class UIController : MonoBehaviour
 	{
+		public static UIController instance;
+
 		public Canvas worldCanvas;
 		public GameObject actionButtonPrefab;
 		public GameObject healthBarPrefab;
@@ -19,6 +21,12 @@ namespace TMG.GMTK2020
 
 		private List<Button> actionButtons;
 		private List<Slider> healthBars;
+
+		private void Awake()
+		{
+			actionButtons = new List<Button>();
+			instance = this;
+		}
 
 		private void Start()
 		{
@@ -34,6 +42,15 @@ namespace TMG.GMTK2020
 					break;
 
 				case BattleState.PlayerActionSelect:
+					ShowHideBattleActionButtons(true);
+					break;
+
+				case BattleState.PlayerActionTargetSelect:
+					ShowHideBattleActionButtons(false);
+					break;
+
+				case BattleState.EnemyActionSelect:
+					ShowHideBattleActionButtons(false);
 					break;
 
 				default:
@@ -51,7 +68,23 @@ namespace TMG.GMTK2020
 		{
 			foreach(Character curChar in BattleController.instance.battleCharacters)
 			{
-				//GameObject newHealthBar = Instantiate()
+				GameObject newHealthBarGO = Instantiate(healthBarPrefab);
+				newHealthBarGO.transform.SetParent(worldCanvas.transform, false);
+				newHealthBarGO.transform.position = curChar.transform.position + healthBarOffset;
+				curChar.healthBarGO = newHealthBarGO;
+				Slider newHealthBarSlider = newHealthBarGO.GetComponent<Slider>();
+				newHealthBarSlider.maxValue = curChar.charStats["Health"].max;
+				newHealthBarSlider.minValue = 0;
+				newHealthBarSlider.value = curChar.charStats["Health"].cur;
+
+				GameObject newControlBarGO = Instantiate(controlBarPrefab);
+				newControlBarGO.transform.SetParent(worldCanvas.transform, false);
+				newControlBarGO.transform.position = curChar.transform.position + controlBarOffset;
+				curChar.controlBarGO = newControlBarGO;
+				Slider newControlBarSlider = newControlBarGO.GetComponent<Slider>();
+				newControlBarSlider.maxValue = curChar.charStats["Control"].max;
+				newControlBarSlider.minValue = 0;
+				newControlBarSlider.value = curChar.charStats["Control"].cur;
 			}
 		}
 
@@ -62,9 +95,9 @@ namespace TMG.GMTK2020
 				if (!curChar.isControllable) { continue; }
 				GameObject newActionButtonGO = Instantiate(actionButtonPrefab);
 				newActionButtonGO.transform.SetParent(worldCanvas.transform, false);
-				newActionButtonGO.transform.position = curChar.transform.position + new Vector3(0f, -100f, 0f);
+				newActionButtonGO.transform.position = curChar.transform.position + actionButtonOffset;
 				Button newActionButton = newActionButtonGO.GetComponent<Button>();
-				newActionButton.onClick.AddListener(() => BattleController.instance.AddAction(curChar.characterAction));
+				newActionButton.onClick.AddListener(() => BattleController.instance.PlayerSelectedAction(curChar.characterAction));
 				actionButtons.Add(newActionButton);
 				TextMeshProUGUI newActionButtonText = newActionButtonGO.GetComponentInChildren<TextMeshProUGUI>();
 				newActionButtonText.text = curChar.characterAction.actionName;
@@ -77,6 +110,17 @@ namespace TMG.GMTK2020
 			{
 				curButton.gameObject.SetActive(shouldShow);
 			}
+		}
+
+		public void OnButtonEndTurn()
+		{
+			BattleStateMachine.instance.ChangeState(BattleState.PlayerActionPlayback);
+		}
+
+		public void UpdateHealthUI(Character curCharacter)
+		{
+			Slider curHealthBarSlider = curCharacter.healthBarGO.GetComponent<Slider>();
+			curHealthBarSlider.value = curCharacter.charStats["Health"].cur;
 		}
 	}
 }
