@@ -234,12 +234,6 @@ namespace TMG.GMTK2020
             {
                 return;
             }
-            if (currentConversation.Count == 0)
-            {
-                Debug.Log("hiding dialogue");
-                HideDialogue();
-                return;
-            }
             dialogueIndex++;
             if (dialogueIndex >= currentConversation.Count)
             {
@@ -277,6 +271,7 @@ namespace TMG.GMTK2020
         /// </summary>
         public void HideDialogue()
         {
+            Debug.Log("HideDialogue()");
             speakerNameText.text = "";
             dialogueText.text = "";
             dialogueCanvas.SetActive(false);

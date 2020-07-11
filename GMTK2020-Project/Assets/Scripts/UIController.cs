@@ -114,6 +114,7 @@ namespace TMG.GMTK2020
 				actionButtons.Add(newActionButton);
 				TextMeshProUGUI newActionButtonText = newActionButtonGO.GetComponentInChildren<TextMeshProUGUI>();
 				newActionButtonText.text = curChar.characterAction.actionName;
+				newActionButtonGO.SetActive(false);
 			}
 		}
 

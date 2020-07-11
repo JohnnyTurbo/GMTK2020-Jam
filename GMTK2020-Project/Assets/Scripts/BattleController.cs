@@ -77,10 +77,10 @@ namespace TMG.GMTK2020
 
 		private void SetupPlayerTurn()
 		{
-			DialogueController.instance.OneLiner("Narrator", "Player Turn Begins!", BeginPlayerTurn);
+			DialogueController.instance?.OneLiner("Narrator", "Player Turn Begins!", BeginPlayerTurn);
 		}
 
-		private void BeginPlayerTurn()
+		public void BeginPlayerTurn()
 		{
 			BattleStateMachine.instance.ChangeState(BattleState.PlayerActionSelect);
 		}
