@@ -10,6 +10,7 @@ namespace TMG.GMTK2020
 		public int maxHealth;
 		public int maxControl;
 		public int actionAmount;
+		public bool isControllable;
 		public Action characterAction;
 
 		public Dictionary<string, Stat> charStats = new Dictionary<string, Stat>();
