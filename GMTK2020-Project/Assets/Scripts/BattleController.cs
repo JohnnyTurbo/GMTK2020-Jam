@@ -22,7 +22,11 @@ namespace TMG.GMTK2020
 		{
 			switch (BattleStateMachine.instance.curBattleState)
 			{
-				case BattleState.RegisterCharacters:
+				case BattleState.PreNewBattleSetup:
+					BattleStateMachine.instance.ChangeState(BattleState.NewBattleSetup);
+					break;
+
+				case BattleState.NewBattleSetup:
 					BattleStateMachine.instance.ChangeState(BattleState.PlayerActionSelect);
 					break;
 
@@ -33,7 +37,7 @@ namespace TMG.GMTK2020
 
 		public void BeginBattle()
 		{
-			BattleStateMachine.instance.ChangeState(BattleState.RegisterCharacters);
+			BattleStateMachine.instance.ChangeState(BattleState.PreNewBattleSetup);
 		}
 
 		public void RegisterCharacter(Character newCharacter)

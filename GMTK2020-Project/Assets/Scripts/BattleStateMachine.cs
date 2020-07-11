@@ -6,7 +6,8 @@ using UnityEngine;
 namespace TMG.GMTK2020
 {
     public enum BattleState {
-								RegisterCharacters,
+								PreNewBattleSetup,
+								NewBattleSetup,
 								PlayerActionSelect,
 								PlayerActionTargetSelect,
 								PlayerActionPlayback,

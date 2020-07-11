@@ -41,7 +41,7 @@ namespace TMG.GMTK2020
 		{
 			switch (newState)
 			{
-				case BattleState.RegisterCharacters:
+				case BattleState.PreNewBattleSetup:
 					BattleController.instance.RegisterCharacter(this);
 					break;
 
