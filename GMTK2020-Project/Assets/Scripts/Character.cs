@@ -12,13 +12,14 @@ namespace TMG.GMTK2020
 		public int actionAmount;
 		public bool isControllable;
 		public Action characterAction;
+		public GameObject healthBarGO, controlBarGO;
 
 		public Dictionary<string, Stat> charStats = new Dictionary<string, Stat>();
 
 		private void Awake()
 		{
-			charStats.Add("Health", new Stat() { max = maxHealth, cur = maxHealth });
-			charStats.Add("Control", new Stat() { max = maxControl, cur = maxControl });
+			charStats.Add("Health", new Stat(maxHealth));
+			charStats.Add("Control", new Stat(maxControl));
 			SetupAction();
 		}
 
