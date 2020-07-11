@@ -8,6 +8,7 @@ namespace TMG.GMTK2020
     public enum BattleState {
 								PreNewBattleSetup,
 								NewBattleSetup,
+								SetupPlayerTurn,
 								PlayerActionSelect,
 								PlayerActionTargetSelect,
 								PlayerActionPlayback,

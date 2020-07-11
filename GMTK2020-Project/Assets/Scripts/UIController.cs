@@ -41,6 +41,10 @@ namespace TMG.GMTK2020
 					InitializeBattleUI();
 					break;
 
+				case BattleState.SetupPlayerTurn:
+					EnableActionButtons();
+					break;
+
 				case BattleState.PlayerActionSelect:
 					ShowHideBattleActionButtons(true);
 					break;
@@ -55,6 +59,14 @@ namespace TMG.GMTK2020
 
 				default:
 					break;
+			}
+		}
+
+		private void EnableActionButtons()
+		{
+			foreach(Button curButton in actionButtons)
+			{
+				curButton.interactable = true;
 			}
 		}
 
@@ -96,12 +108,18 @@ namespace TMG.GMTK2020
 				GameObject newActionButtonGO = Instantiate(actionButtonPrefab);
 				newActionButtonGO.transform.SetParent(worldCanvas.transform, false);
 				newActionButtonGO.transform.position = curChar.transform.position + actionButtonOffset;
+				curChar.actionButtonGO = newActionButtonGO;
 				Button newActionButton = newActionButtonGO.GetComponent<Button>();
 				newActionButton.onClick.AddListener(() => BattleController.instance.PlayerSelectedAction(curChar.characterAction));
 				actionButtons.Add(newActionButton);
 				TextMeshProUGUI newActionButtonText = newActionButtonGO.GetComponentInChildren<TextMeshProUGUI>();
 				newActionButtonText.text = curChar.characterAction.actionName;
 			}
+		}
+
+		public void DisableActionButton(GameObject buttonToDisable)
+		{
+			buttonToDisable.GetComponent<Button>().interactable = false;
 		}
 
 		public void ShowHideBattleActionButtons(bool shouldShow)

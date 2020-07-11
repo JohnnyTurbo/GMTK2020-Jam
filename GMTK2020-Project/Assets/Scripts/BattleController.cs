@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -32,7 +33,11 @@ namespace TMG.GMTK2020
 					break;
 
 				case BattleState.NewBattleSetup:
-					BattleStateMachine.instance.ChangeState(BattleState.PlayerActionSelect);
+					BattleStateMachine.instance.ChangeState(BattleState.SetupPlayerTurn);
+					break;
+
+				case BattleState.SetupPlayerTurn:
+					SetupPlayerTurn();
 					break;
 
 				case BattleState.PlayerActionTargetSelect:
@@ -48,6 +53,7 @@ namespace TMG.GMTK2020
 							curAction.target = targetChar;
 							AddAction(curAction);
 							BattleStateMachine.instance.ChangeState(BattleState.PlayerActionSelect);
+							UIController.instance.DisableActionButton(curAction.source.actionButtonGO);
 						}						
 					}
 					break;
@@ -67,6 +73,16 @@ namespace TMG.GMTK2020
 				default:
 					break;
 			}
+		}
+
+		private void SetupPlayerTurn()
+		{
+			DialogueController.instance.OneLiner("Narrator", "Player Turn Begins!", BeginPlayerTurn);
+		}
+
+		private void BeginPlayerTurn()
+		{
+			BattleStateMachine.instance.ChangeState(BattleState.PlayerActionSelect);
 		}
 
 		public void BeginBattle()
@@ -105,7 +121,7 @@ namespace TMG.GMTK2020
 			Debug.Log("Executing actions");
             while(battleActions.Count > 0)
 			{
-                Action curAction = battleActions.Dequeue();
+				Action curAction = battleActions.Dequeue();
                 curAction.Execute();
 			}
 
@@ -116,7 +132,7 @@ namespace TMG.GMTK2020
 					break;
 
 				case BattleState.EnemyActionPlayback:
-					BattleStateMachine.instance.ChangeState(BattleState.PlayerActionSelect);
+					BattleStateMachine.instance.ChangeState(BattleState.SetupPlayerTurn);
 					break;
 			}
 		}

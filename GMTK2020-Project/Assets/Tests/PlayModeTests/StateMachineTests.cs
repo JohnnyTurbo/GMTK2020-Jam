@@ -30,6 +30,10 @@ namespace Tests
 
             yield return null;
 
+            Assert.AreEqual(BattleState.SetupPlayerTurn, BattleStateMachine.instance.curBattleState);
+
+            yield return null;
+
             Assert.AreEqual(BattleState.PlayerActionSelect, BattleStateMachine.instance.curBattleState);
         }
     }
