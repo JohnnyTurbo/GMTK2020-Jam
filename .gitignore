@@ -11,6 +11,16 @@
 [Mm]emoryCaptures/
 Art/
 Art.meta
+Epic\ Toon\ FX/
+Epic\ Toon\ FX.meta
+Interface\ And\ Item\ Sounds/
+Interface\ And\ Item\ Sounds.meta
+CharacterArt/
+CharacterArt.meta
+CyberPunk/
+CyberPunk.meta
+Warped\ City\ Assets/
+Warped\ City\ Assets.meta
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta

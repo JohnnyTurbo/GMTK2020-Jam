@@ -166,6 +166,13 @@ namespace TMG.GMTK2020
 			BattleStateMachine.instance.ChangeState(BattleState.PlayerActionSelect);
 		}
 
+		public void CancelAllActions()
+		{
+			curAction = null;
+			BattleStateMachine.instance.ChangeState(BattleState.PlayerActionSelect);
+			battleActions.Clear();
+		}
+
 		public void AddActionToFront(Action newAction)
 		{
 			battleActions.Insert(0, newAction);
@@ -203,6 +210,8 @@ namespace TMG.GMTK2020
 					}
 				}
 			}
+
+			yield return null;
 
 			switch (BattleStateMachine.instance.curBattleState)
 			{

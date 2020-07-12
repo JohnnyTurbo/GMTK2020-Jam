@@ -16,6 +16,9 @@ namespace TMG.GMTK2020
 		public GameObject actionButtonPrefab;
 		public GameObject healthBarPrefab;
 		public GameObject controlBarPrefab;
+		public GameObject cancelButtonGO;
+		public GameObject cancelAllActionsButtonGO;
+		public GameObject endTurnButtonGO;
 		public Vector3 actionButtonOffset;
 		public Vector3 healthBarOffset;
 		public Vector3 controlBarOffset;
@@ -42,18 +45,22 @@ namespace TMG.GMTK2020
 
 				case BattleState.SetupPlayerTurn:
 					EnableActionButtons();
+					ShowHideCancelAllButton(true);
 					break;
 
 				case BattleState.PlayerActionSelect:
 					ShowHideBattleActionButtons(true);
+					ShowHideCancelButton(false);
 					break;
 
 				case BattleState.PlayerActionTargetSelect:
 					ShowHideBattleActionButtons(false);
+					ShowHideCancelButton(true);
 					break;
 
 				case BattleState.PrePlayerActionPlayback:
 					ShowHideBattleActionButtons(false);
+					ShowHideCancelAllButton(false);
 					break;
 
 				default:
@@ -132,6 +139,17 @@ namespace TMG.GMTK2020
 			}
 		}
 
+		public void ShowHideCancelButton(bool shouldShow)
+		{
+			cancelButtonGO.SetActive(shouldShow);
+		}
+
+		public void ShowHideCancelAllButton(bool shouldShow)
+		{
+			cancelAllActionsButtonGO.SetActive(shouldShow);
+			endTurnButtonGO.SetActive(shouldShow);
+		}
+
 		public void OnButtonEndTurn()
 		{
 			BattleStateMachine.instance.ChangeState(BattleState.PrePlayerActionPlayback);
@@ -144,7 +162,11 @@ namespace TMG.GMTK2020
 
 		public void OnButtonCancelAllActions()
 		{
-
+			BattleController.instance.CancelAllActions();
+			foreach(Button curButton in actionButtons)
+			{
+				curButton.interactable = true;
+			}
 		}
 
 		public void UpdateHealthUI(Character curCharacter)
