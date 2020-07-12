@@ -7,6 +7,7 @@ namespace TMG.GMTK2020
 {
     public abstract class Character : MonoBehaviour
     {
+		public string charName;
 		public int maxHealth;
 		public int maxControl;
 		public int actionAmount;

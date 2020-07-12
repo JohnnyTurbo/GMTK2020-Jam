@@ -11,8 +11,10 @@ namespace TMG.GMTK2020
 								SetupPlayerTurn,
 								PlayerActionSelect,
 								PlayerActionTargetSelect,
+								PrePlayerActionPlayback,
 								PlayerActionPlayback,
 								EnemyActionSelect,
+								PreEnemyActionPlayback,
 								EnemyActionPlayback,
 								Cutscene,
 								None

@@ -16,7 +16,8 @@ namespace TMG.GMTK2020
 		private Action curAction;
 
 		private Camera mainCamera;
-		
+		private bool shouldContinue;
+
 		private void Awake()
 		{
 			instance = this;
@@ -58,16 +59,24 @@ namespace TMG.GMTK2020
 					}
 					break;
 
+				case BattleState.PrePlayerActionPlayback:
+					StartCoroutine(ExecuteActions());
+					BattleStateMachine.instance.ChangeState(BattleState.PlayerActionPlayback);
+					break;
+
 				case BattleState.PlayerActionPlayback:
-					ExecuteActions();
 					break;
 
 				case BattleState.EnemyActionSelect:
+					BattleStateMachine.instance.ChangeState(BattleState.PreEnemyActionPlayback);
+					break;
+
+				case BattleState.PreEnemyActionPlayback:
+					StartCoroutine(ExecuteActions());
 					BattleStateMachine.instance.ChangeState(BattleState.EnemyActionPlayback);
 					break;
 
 				case BattleState.EnemyActionPlayback:
-					ExecuteActions();
 					break;
 
 				default:
@@ -116,13 +125,15 @@ namespace TMG.GMTK2020
 			battleActions.Clear();
 		}
 
-		public void ExecuteActions()
+		public IEnumerator ExecuteActions()
 		{
 			Debug.Log("Executing actions");
             while(battleActions.Count > 0)
 			{
+				shouldContinue = false;
 				Action curAction = battleActions.Dequeue();
-                curAction.Execute();
+				DialogueController.instance.OneLiner("Narrator", curAction.Execute(), ContinueDialogue);
+				yield return new WaitUntil(() => shouldContinue == true);
 			}
 
 			switch (BattleStateMachine.instance.curBattleState)
@@ -135,6 +146,11 @@ namespace TMG.GMTK2020
 					BattleStateMachine.instance.ChangeState(BattleState.SetupPlayerTurn);
 					break;
 			}
+		}
+
+		private void ContinueDialogue()
+		{
+			shouldContinue = true;
 		}
     }
 }

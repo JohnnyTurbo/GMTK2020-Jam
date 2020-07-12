@@ -1039,6 +1039,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b09360c5ca7bcb34ea470eb1464a8a05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  charName: Player
   maxHealth: 10
   maxControl: 10
   actionAmount: -5
@@ -1359,9 +1360,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 643628354dcb2f8439e6557982888e00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  charName: Big Boss
   maxHealth: 10
   maxControl: 50
-  actionAmount: -10
+  actionAmount: -5
   isControllable: 0
   healthBarGO: {fileID: 0}
   controlBarGO: {fileID: 0}

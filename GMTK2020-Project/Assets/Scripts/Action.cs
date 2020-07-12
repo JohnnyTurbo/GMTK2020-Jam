@@ -9,9 +9,9 @@ namespace TMG.GMTK2020
         public Character source, target;
 		public string actionName;
 
-        public virtual void Execute()
+        public virtual string Execute()
 		{
-
+			return null;
 		}
     }
 
@@ -27,10 +27,11 @@ namespace TMG.GMTK2020
 			actionName = _actionName;
 		}
 
-		public override void Execute()
+		public override string Execute()
 		{
 			target?.ModifyHealth(amount);
-			//Debug.Log("Source: " + source.gameObject.name + " Target: " + target.gameObject.name + " Amount: " + amount);
+			Debug.Log("Source: " + source.gameObject.name + " Target: " + target.gameObject.name + " Amount: " + amount);
+			return $"{source.charName} {actionName}ed {target.charName} for {amount} hit points!";
 		}
 	}
 }

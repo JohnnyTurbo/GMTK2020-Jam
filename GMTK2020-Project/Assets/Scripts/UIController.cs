@@ -133,7 +133,7 @@ namespace TMG.GMTK2020
 
 		public void OnButtonEndTurn()
 		{
-			BattleStateMachine.instance.ChangeState(BattleState.PlayerActionPlayback);
+			BattleStateMachine.instance.ChangeState(BattleState.PrePlayerActionPlayback);
 		}
 
 		public void UpdateHealthUI(Character curCharacter)
