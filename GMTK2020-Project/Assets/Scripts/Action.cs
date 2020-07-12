@@ -10,6 +10,7 @@ namespace TMG.GMTK2020
     public class Action
     {
         public Character source, target, controller;
+		public int amount;
 		public string actionName;
 
         public virtual string Execute()
@@ -26,7 +27,6 @@ namespace TMG.GMTK2020
     public class HealthAction : Action
 	{
 
-		private int amount;
 		private int controlCost;
 		private HealthActionTypes healthActionType;
 

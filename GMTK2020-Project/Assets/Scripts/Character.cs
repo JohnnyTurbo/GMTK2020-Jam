@@ -17,6 +17,10 @@ namespace TMG.GMTK2020
 		public GameObject healthBarGO, controlBarGO, actionButtonGO;
 		public HealthActionTypes actionType;
 
+		public Vector3 actionButtonOffset;
+		public Vector3 healthBarOffset;
+		public Vector3 controlBarOffset;
+
 		public Dictionary<string, Stat> charStats = new Dictionary<string, Stat>();
 
 		private void Awake()

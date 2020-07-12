@@ -16,12 +16,11 @@ namespace TMG.GMTK2020
 		public GameObject actionButtonPrefab;
 		public GameObject healthBarPrefab;
 		public GameObject controlBarPrefab;
+		public GameObject controlCostPrefab;
 		public GameObject cancelButtonGO;
 		public GameObject cancelAllActionsButtonGO;
 		public GameObject endTurnButtonGO;
-		public Vector3 actionButtonOffset;
-		public Vector3 healthBarOffset;
-		public Vector3 controlBarOffset;
+		public GameObject beginBattleButton;
 
 
 		private void Awake()
@@ -39,6 +38,10 @@ namespace TMG.GMTK2020
 		{
 			switch (newState)
 			{
+				case BattleState.PreNewBattleSetup:
+					beginBattleButton.SetActive(false);
+					break;
+
 				case BattleState.NewBattleSetup:
 					InitializeBattleUI();
 					break;
@@ -88,23 +91,34 @@ namespace TMG.GMTK2020
 			{
 				GameObject newHealthBarGO = Instantiate(healthBarPrefab);
 				newHealthBarGO.transform.SetParent(worldCanvas.transform, false);
-				newHealthBarGO.transform.position = curChar.transform.position + healthBarOffset;
+				newHealthBarGO.transform.position = curChar.transform.position + curChar.healthBarOffset;
 				curChar.healthBarGO = newHealthBarGO;
 				Slider newHealthBarSlider = newHealthBarGO.GetComponent<Slider>();
 				newHealthBarSlider.maxValue = curChar.charStats["Health"].max;
 				newHealthBarSlider.minValue = 0;
 				newHealthBarSlider.value = curChar.charStats["Health"].cur;
 
-				if(curChar is NeutralUnit) { continue; }
+				UpdateHealthUI(curChar);
+
+				if(curChar is NeutralUnit) {
+					GameObject newControlCostGO = Instantiate(controlCostPrefab);
+					newControlCostGO.transform.SetParent(worldCanvas.transform, false);
+					newControlCostGO.transform.position = curChar.transform.position + curChar.controlBarOffset;
+					TextMeshProUGUI controlText = newControlCostGO.GetComponent<TextMeshProUGUI>();
+					controlText.text = $"Ctrl Cost: {curChar.controlCost}";
+					continue; 
+				}
 
 				GameObject newControlBarGO = Instantiate(controlBarPrefab);
 				newControlBarGO.transform.SetParent(worldCanvas.transform, false);
-				newControlBarGO.transform.position = curChar.transform.position + controlBarOffset;
+				newControlBarGO.transform.position = curChar.transform.position + curChar.controlBarOffset;
 				curChar.controlBarGO = newControlBarGO;
 				Slider newControlBarSlider = newControlBarGO.GetComponent<Slider>();
 				newControlBarSlider.maxValue = curChar.charStats["Control"].max;
 				newControlBarSlider.minValue = 0;
 				newControlBarSlider.value = curChar.charStats["Control"].cur;
+
+				UpdateControlUI(curChar);
 			}
 		}
 
@@ -115,13 +129,13 @@ namespace TMG.GMTK2020
 				if (!curChar.isControllable) { continue; }
 				GameObject newActionButtonGO = Instantiate(actionButtonPrefab);
 				newActionButtonGO.transform.SetParent(worldCanvas.transform, false);
-				newActionButtonGO.transform.position = curChar.transform.position + actionButtonOffset;
+				newActionButtonGO.transform.position = curChar.transform.position + curChar.actionButtonOffset;
 				curChar.actionButtonGO = newActionButtonGO;
 				Button newActionButton = newActionButtonGO.GetComponent<Button>();
 				newActionButton.onClick.AddListener(() => BattleController.instance.PlayerSelectedAction(curChar));
 				actionButtons.Add(newActionButton);
 				TextMeshProUGUI newActionButtonText = newActionButtonGO.GetComponentInChildren<TextMeshProUGUI>();
-				newActionButtonText.text = curChar.characterAction.actionName;
+				newActionButtonText.text = $"{curChar.characterAction.actionName}: {Math.Abs(curChar.characterAction.amount)}";
 				newActionButtonGO.SetActive(false);
 			}
 		}
@@ -173,12 +187,16 @@ namespace TMG.GMTK2020
 		{
 			Slider curHealthBarSlider = curCharacter.healthBarGO.GetComponent<Slider>();
 			curHealthBarSlider.value = curCharacter.charStats["Health"].cur;
+			TextMeshProUGUI healthBarText = curHealthBarSlider.GetComponentInChildren<TextMeshProUGUI>();
+			healthBarText.text = $"HP: {curCharacter.charStats["Health"].cur}/{curCharacter.charStats["Health"].max}";
 		}
 
 		public void UpdateControlUI(Character curCharacter)
 		{
 			Slider curControlBarSlider = curCharacter.controlBarGO.GetComponent<Slider>();
 			curControlBarSlider.value = curCharacter.charStats["Control"].cur;
+			TextMeshProUGUI ctrlBarText = curControlBarSlider.GetComponentInChildren<TextMeshProUGUI>();
+			ctrlBarText.text = $"Ctrl: {curCharacter.charStats["Control"].cur}/{curCharacter.charStats["Control"].max}";
 		}
 	}
 }

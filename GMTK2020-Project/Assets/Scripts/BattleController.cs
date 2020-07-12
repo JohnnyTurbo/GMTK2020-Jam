@@ -44,6 +44,16 @@ namespace TMG.GMTK2020
 					SetupPlayerTurn();
 					break;
 
+				case BattleState.PrePlayerActionSelect:
+					DialogueController.instance.OneLiner("Narrator", "Select an action or end turn");
+					BattleStateMachine.instance.ChangeState(BattleState.PlayerActionSelect);
+					break;
+
+				case BattleState.PrePlayerActionTargetSelect:
+					DialogueController.instance.OneLiner("Narrator", "Select a target for the action");
+					BattleStateMachine.instance.ChangeState(BattleState.PlayerActionTargetSelect);
+					break;
+
 				case BattleState.PlayerActionTargetSelect:
 					if (Input.GetMouseButtonDown(0))
 					{
@@ -61,7 +71,7 @@ namespace TMG.GMTK2020
 							}
 							AddAction(curAction);
 							UIController.instance.DisableActionButton(curAction.source.actionButtonGO);
-							BattleStateMachine.instance.ChangeState(BattleState.PlayerActionSelect);
+							BattleStateMachine.instance.ChangeState(BattleState.PrePlayerActionSelect);
 						}						
 					}
 					break;
@@ -129,7 +139,7 @@ namespace TMG.GMTK2020
 
 		public void BeginPlayerTurn()
 		{
-			BattleStateMachine.instance.ChangeState(BattleState.PlayerActionSelect);
+			BattleStateMachine.instance.ChangeState(BattleState.PrePlayerActionSelect);
 		}
 
 		public void BeginBattle()
@@ -157,7 +167,7 @@ namespace TMG.GMTK2020
 				}
 			}
 			curAction = selectedCharacter.characterAction;
-			BattleStateMachine.instance.ChangeState(BattleState.PlayerActionTargetSelect);
+			BattleStateMachine.instance.ChangeState(BattleState.PrePlayerActionTargetSelect);
 		}
 
 		public void PlayerCanceledAction()
