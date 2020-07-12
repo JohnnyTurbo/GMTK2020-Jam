@@ -1160,7 +1160,7 @@ MonoBehaviour:
   charName: Player
   maxHealth: 10
   maxControl: 10
-  actionAmount: 2
+  actionAmount: 20
   controlCost: 0
   isControllable: 1
   healthBarGO: {fileID: 0}
@@ -1539,6 +1539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5140a63c556f294b99b54150e49fc4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actionButtons: []
   worldCanvas: {fileID: 234650965}
   actionButtonPrefab: {fileID: 6483032123124061145, guid: 7fe1cd71835638f48afcfc08db752167,
     type: 3}

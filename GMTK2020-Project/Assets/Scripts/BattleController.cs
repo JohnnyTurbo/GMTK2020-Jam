@@ -17,7 +17,6 @@ namespace TMG.GMTK2020
 
         private List<Action> battleActions;
 		private Action curAction;
-		private Character selectedCharacter;
 		private Camera mainCamera;
 		private bool shouldContinue;
 
@@ -148,9 +147,8 @@ namespace TMG.GMTK2020
 			battleCharacters.Remove(characterToRemove);
 		}
 
-		public void PlayerSelectedAction(Character _selectedCharacter)
-		{
-			selectedCharacter = _selectedCharacter;
+		public void PlayerSelectedAction(Character selectedCharacter)
+		{			
 			if (battleCharacters.FirstOrDefault(c => c is Player) is Player foundP)
 			{
 				if(foundP.charStats["Control"].cur - selectedCharacter.controlCost <= 0)
@@ -160,6 +158,12 @@ namespace TMG.GMTK2020
 			}
 			curAction = selectedCharacter.characterAction;
 			BattleStateMachine.instance.ChangeState(BattleState.PlayerActionTargetSelect);
+		}
+
+		public void PlayerCanceledAction()
+		{
+			curAction = null;
+			BattleStateMachine.instance.ChangeState(BattleState.PlayerActionSelect);
 		}
 
 		public void AddActionToFront(Action newAction)
@@ -185,8 +189,19 @@ namespace TMG.GMTK2020
 				shouldContinue = false;
 				Action curAction = battleActions[0];
 				battleActions.RemoveAt(0);
-				DialogueController.instance.OneLiner("Narrator", curAction.Execute(), ContinueDialogue);
-				yield return new WaitUntil(() => shouldContinue == true);
+				if (curAction.source != null)
+				{
+					if (curAction.target == null)
+					{
+						DialogueController.instance.OneLiner("Narrator", curAction.ExecuteMissed(), ContinueDialogue);
+						yield return new WaitUntil(() => shouldContinue == true);
+					}
+					else
+					{
+						DialogueController.instance.OneLiner("Narrator", curAction.Execute(), ContinueDialogue);
+						yield return new WaitUntil(() => shouldContinue == true);
+					}
+				}
 			}
 
 			switch (BattleStateMachine.instance.curBattleState)

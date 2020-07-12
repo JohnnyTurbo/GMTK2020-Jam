@@ -11,6 +11,7 @@ namespace TMG.GMTK2020
 	{
 		public static UIController instance;
 
+		public List<Button> actionButtons;
 		public Canvas worldCanvas;
 		public GameObject actionButtonPrefab;
 		public GameObject healthBarPrefab;
@@ -19,8 +20,6 @@ namespace TMG.GMTK2020
 		public Vector3 healthBarOffset;
 		public Vector3 controlBarOffset;
 
-		private List<Button> actionButtons;
-		private List<Slider> healthBars;
 
 		private void Awake()
 		{
@@ -53,7 +52,7 @@ namespace TMG.GMTK2020
 					ShowHideBattleActionButtons(false);
 					break;
 
-				case BattleState.EnemyActionSelect:
+				case BattleState.PrePlayerActionPlayback:
 					ShowHideBattleActionButtons(false);
 					break;
 
@@ -136,6 +135,16 @@ namespace TMG.GMTK2020
 		public void OnButtonEndTurn()
 		{
 			BattleStateMachine.instance.ChangeState(BattleState.PrePlayerActionPlayback);
+		}
+
+		public void OnButtonCancelAction()
+		{
+			BattleController.instance.PlayerCanceledAction();
+		}
+
+		public void OnButtonCancelAllActions()
+		{
+
 		}
 
 		public void UpdateHealthUI(Character curCharacter)

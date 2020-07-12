@@ -16,6 +16,11 @@ namespace TMG.GMTK2020
 		{
 			return null;
 		}
+
+		public virtual string ExecuteMissed()
+		{
+			return null;
+		}
     }
 
     public class HealthAction : Action
@@ -51,6 +56,11 @@ namespace TMG.GMTK2020
 			controller?.ModifyControl(-source.controlCost);
 			//Debug.Log("Source: " + source.gameObject.name + " Target: " + target.gameObject.name + " Amount: " + amount);
 			return $"{source.charName} {actionName}ed {target.charName} for {Math.Abs(amount)} hit points!";
+		}
+
+		public override string ExecuteMissed()
+		{
+			return $"{source.charName} tried to {actionName} {target.charName} but it missed!";
 		}
 	}
 
