@@ -18,9 +18,6 @@ namespace Tests
             GameObject battleControllerGO = new GameObject();
             BattleController battleController = battleControllerGO.AddComponent<BattleController>();
 
-            //GameObject dialogueControllerGO = new GameObject();
-            //DialogueController dialogueController = dialogueControllerGO.AddComponent<DialogueController>();
-
             Assert.AreEqual(BattleState.None, BattleStateMachine.instance.curBattleState);
 
             battleController.BeginBattle();
@@ -38,6 +35,10 @@ namespace Tests
             yield return null;
 
             battleController.BeginPlayerTurn();
+
+            Assert.AreEqual(BattleState.PrePlayerActionSelect, BattleStateMachine.instance.curBattleState);
+
+            yield return null;
 
             Assert.AreEqual(BattleState.PlayerActionSelect, BattleStateMachine.instance.curBattleState);
         }

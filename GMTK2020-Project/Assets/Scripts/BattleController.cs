@@ -45,7 +45,7 @@ namespace TMG.GMTK2020
 					break;
 
 				case BattleState.PrePlayerActionSelect:
-					DialogueController.instance.OneLiner("Narrator", "Select an action or end turn");
+					DialogueController.instance?.OneLiner("Narrator", "Select an action or end turn");
 					BattleStateMachine.instance.ChangeState(BattleState.PlayerActionSelect);
 					break;
 
