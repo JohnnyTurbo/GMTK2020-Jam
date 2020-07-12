@@ -9,7 +9,7 @@ namespace TMG.GMTK2020
 
     public class Action
     {
-        public Character source, target;
+        public Character source, target, controller;
 		public string actionName;
 
         public virtual string Execute()
@@ -20,23 +20,26 @@ namespace TMG.GMTK2020
 
     public class HealthAction : Action
 	{
+
 		private int amount;
+		private int controlCost;
 		private HealthActionTypes healthActionType;
 
-		public HealthAction(Character _source, Character _target, int _amount, HealthActionTypes _healthActionType)
+		public HealthAction(Character _source, Character _target, Character _controller, HealthActionTypes _healthActionType)
 		{
 			target = _target;
 			source = _source;
+			controlCost = source.controlCost;
 			healthActionType = _healthActionType;
 			switch (healthActionType)
 			{
 				case HealthActionTypes.Attack:
-					amount = -_amount;
+					amount = -source.actionAmount;
 					actionName = "Attack";
 					break;
 
 				case HealthActionTypes.Heal:
-					amount = _amount;
+					amount = source.actionAmount;
 					actionName = "Heal";
 					break;
 			}
@@ -45,6 +48,7 @@ namespace TMG.GMTK2020
 		public override string Execute()
 		{
 			target?.ModifyHealth(source, amount);
+			controller?.ModifyControl(-source.controlCost);
 			//Debug.Log("Source: " + source.gameObject.name + " Target: " + target.gameObject.name + " Amount: " + amount);
 			return $"{source.charName} {actionName}ed {target.charName} for {Math.Abs(amount)} hit points!";
 		}

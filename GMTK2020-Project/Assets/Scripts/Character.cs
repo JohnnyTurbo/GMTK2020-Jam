@@ -11,6 +11,7 @@ namespace TMG.GMTK2020
 		public int maxHealth;
 		public int maxControl;
 		public int actionAmount;
+		public int controlCost;
 		public bool isControllable;
 		public Action characterAction;
 		public GameObject healthBarGO, controlBarGO, actionButtonGO;
@@ -37,7 +38,7 @@ namespace TMG.GMTK2020
 
 		protected virtual void SetupAction()
 		{
-			characterAction = new HealthAction(this, null, actionAmount, actionType);
+			characterAction = new HealthAction(this, null, null, actionType);
 		}
 
 		protected virtual void StateChanged(BattleState newState)
@@ -51,6 +52,13 @@ namespace TMG.GMTK2020
 				default:
 					break;
 			}
+		}
+
+		public void ModifyControl(int amount)
+		{
+			//Debug.Log($"Modifying control by {amount}");
+			charStats["Control"].ModifyCurStat(amount);
+			UIController.instance.UpdateControlUI(this);			
 		}
 
 		public void ModifyHealth(Character source, int amount)

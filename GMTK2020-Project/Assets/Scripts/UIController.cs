@@ -112,7 +112,7 @@ namespace TMG.GMTK2020
 				newActionButtonGO.transform.position = curChar.transform.position + actionButtonOffset;
 				curChar.actionButtonGO = newActionButtonGO;
 				Button newActionButton = newActionButtonGO.GetComponent<Button>();
-				newActionButton.onClick.AddListener(() => BattleController.instance.PlayerSelectedAction(curChar.characterAction));
+				newActionButton.onClick.AddListener(() => BattleController.instance.PlayerSelectedAction(curChar));
 				actionButtons.Add(newActionButton);
 				TextMeshProUGUI newActionButtonText = newActionButtonGO.GetComponentInChildren<TextMeshProUGUI>();
 				newActionButtonText.text = curChar.characterAction.actionName;
@@ -142,6 +142,12 @@ namespace TMG.GMTK2020
 		{
 			Slider curHealthBarSlider = curCharacter.healthBarGO.GetComponent<Slider>();
 			curHealthBarSlider.value = curCharacter.charStats["Health"].cur;
+		}
+
+		public void UpdateControlUI(Character curCharacter)
+		{
+			Slider curControlBarSlider = curCharacter.controlBarGO.GetComponent<Slider>();
+			curControlBarSlider.value = curCharacter.charStats["Control"].cur;
 		}
 	}
 }

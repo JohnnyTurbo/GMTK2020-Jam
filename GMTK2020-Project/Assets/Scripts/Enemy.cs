@@ -24,7 +24,7 @@ namespace TMG.GMTK2020
 
 		private void SelectAction()
 		{
-			if(BattleController.instance.battleCharacters.FirstOrDefault<Character>(c => c is Player)is Player foundP)
+			if(BattleController.instance.battleCharacters.FirstOrDefault(c => c is Player)is Player foundP)
 			{
 				characterAction.target = foundP;
 				//Debug.Log("Found player");

@@ -17,6 +17,7 @@ namespace TMG.GMTK2020
 
         private List<Action> battleActions;
 		private Action curAction;
+		private Character selectedCharacter;
 		private Camera mainCamera;
 		private bool shouldContinue;
 
@@ -55,9 +56,13 @@ namespace TMG.GMTK2020
 							Character targetChar = hit.transform.GetComponent<Character>();
 							if(targetChar == null) { break; }
 							curAction.target = targetChar;
+							if(battleCharacters.FirstOrDefault(c => c is Player) is Player foundP)
+							{
+								curAction.controller = foundP;
+							}
 							AddAction(curAction);
-							BattleStateMachine.instance.ChangeState(BattleState.PlayerActionSelect);
 							UIController.instance.DisableActionButton(curAction.source.actionButtonGO);
+							BattleStateMachine.instance.ChangeState(BattleState.PlayerActionSelect);
 						}						
 					}
 					break;
@@ -143,9 +148,17 @@ namespace TMG.GMTK2020
 			battleCharacters.Remove(characterToRemove);
 		}
 
-		public void PlayerSelectedAction(Action newAction)
-		{			
-			curAction = newAction;
+		public void PlayerSelectedAction(Character _selectedCharacter)
+		{
+			selectedCharacter = _selectedCharacter;
+			if (battleCharacters.FirstOrDefault(c => c is Player) is Player foundP)
+			{
+				if(foundP.charStats["Control"].cur - selectedCharacter.controlCost <= 0)
+				{
+					return;
+				}
+			}
+			curAction = selectedCharacter.characterAction;
 			BattleStateMachine.instance.ChangeState(BattleState.PlayerActionTargetSelect);
 		}
 

@@ -903,6 +903,7 @@ MonoBehaviour:
   maxHealth: 8
   maxControl: 0
   actionAmount: 3
+  controlCost: 1
   isControllable: 1
   healthBarGO: {fileID: 1230359858730352844, guid: 08c2eea46c5ed294389d5c4098599cf1,
     type: 3}
@@ -1160,6 +1161,7 @@ MonoBehaviour:
   maxHealth: 10
   maxControl: 10
   actionAmount: 2
+  controlCost: 0
   isControllable: 1
   healthBarGO: {fileID: 0}
   controlBarGO: {fileID: 0}
@@ -1398,6 +1400,7 @@ MonoBehaviour:
   maxHealth: 8
   maxControl: 0
   actionAmount: 3
+  controlCost: 5
   isControllable: 1
   healthBarGO: {fileID: 1230359858730352844, guid: 08c2eea46c5ed294389d5c4098599cf1,
     type: 3}
@@ -1642,7 +1645,8 @@ MonoBehaviour:
   charName: Big Boss
   maxHealth: 10
   maxControl: 50
-  actionAmount: 5
+  actionAmount: 1
+  controlCost: 0
   isControllable: 0
   healthBarGO: {fileID: 0}
   controlBarGO: {fileID: 0}
