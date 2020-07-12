@@ -29,9 +29,25 @@ namespace TMG.GMTK2020
 
 		public override string Execute()
 		{
-			target?.ModifyHealth(amount);
+			target?.ModifyHealth(source, amount);
 			Debug.Log("Source: " + source.gameObject.name + " Target: " + target.gameObject.name + " Amount: " + amount);
 			return $"{source.charName} {actionName}ed {target.charName} for {amount} hit points!";
+		}
+	}
+
+	public class DeathAction : Action
+	{
+		public DeathAction(Character _source, Character _target)
+		{
+			source = _source;
+			target = _target;
+		}
+
+		public override string Execute()
+		{
+			target?.CharacterDead();
+			string deadStr = $"{target.charName} ran out of health";
+			return deadStr;
 		}
 	}
 }

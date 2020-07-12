@@ -52,19 +52,22 @@ namespace TMG.GMTK2020
 			}
 		}
 
-		public void ModifyHealth(int amount)
+		public void ModifyHealth(Character source, int amount)
 		{
 			charStats["Health"].ModifyCurStat(amount);
-			UIController.instance.UpdateHealthUI(this);
+			UIController.instance.UpdateHealthUI(this);			
 			if(charStats["Health"].cur <= 0)
 			{
-				CharacterDead();
-			}
+				DeathAction deathAction = new DeathAction(source, this);
+				BattleController.instance.AddActionToFront(deathAction);
+			}			
 		}
 
-		private void CharacterDead()
+		public void CharacterDead()
 		{
-			Debug.Log("Character: " + gameObject.name + " ran out of health!");
+			//Debug.Log("Character: " + gameObject.name + " ran out of health!");
+			string playerDiedStr = $"{charName} ran out of health!";
+			DialogueController.instance.OneLiner("Narrator", playerDiedStr, SceneManager.instance.ReloadScene);
 			BattleController.instance.RemoveCharacter(this);
 		}
 	}

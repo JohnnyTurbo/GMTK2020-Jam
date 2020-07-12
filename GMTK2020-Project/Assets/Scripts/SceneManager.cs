@@ -27,6 +27,11 @@ namespace TMG.GMTK2020
 
 		}
 
+		public void ReloadScene()
+		{
+			UnityEngine.SceneManagement.SceneManager.LoadScene("BattleScene");
+		}
+
 		public void LoadNewScene(string sceneName)
 		{
 			UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);

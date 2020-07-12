@@ -13,6 +13,7 @@ namespace TMG.GMTK2020
 								PlayerActionTargetSelect,
 								PrePlayerActionPlayback,
 								PlayerActionPlayback,
+								PostPlayerActionPlayback,
 								EnemyActionSelect,
 								PreEnemyActionPlayback,
 								EnemyActionPlayback,

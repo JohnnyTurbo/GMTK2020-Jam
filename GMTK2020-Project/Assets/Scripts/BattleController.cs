@@ -12,7 +12,7 @@ namespace TMG.GMTK2020
 
         public List<Character> battleCharacters;
 
-        private Queue<Action> battleActions;
+        private List<Action> battleActions;
 		private Action curAction;
 
 		private Camera mainCamera;
@@ -21,7 +21,7 @@ namespace TMG.GMTK2020
 		private void Awake()
 		{
 			instance = this;
-			battleActions = new Queue<Action>();
+			battleActions = new List<Action>();
 			mainCamera = Camera.main;
 		}
 
@@ -65,6 +65,11 @@ namespace TMG.GMTK2020
 					break;
 
 				case BattleState.PlayerActionPlayback:
+					break;
+
+				case BattleState.PostPlayerActionPlayback:
+					//CheckForDeadUnits();
+					BattleStateMachine.instance.ChangeState(BattleState.EnemyActionSelect);
 					break;
 
 				case BattleState.EnemyActionSelect:
@@ -115,9 +120,14 @@ namespace TMG.GMTK2020
 			BattleStateMachine.instance.ChangeState(BattleState.PlayerActionTargetSelect);
 		}
 
+		public void AddActionToFront(Action newAction)
+		{
+			battleActions.Insert(0, newAction);
+		}
+
 		public void AddAction(Action newAction)
 		{
-			battleActions.Enqueue(newAction);
+			battleActions.Add(newAction);
 		}
 
 		public void ClearActions()
@@ -131,7 +141,8 @@ namespace TMG.GMTK2020
             while(battleActions.Count > 0)
 			{
 				shouldContinue = false;
-				Action curAction = battleActions.Dequeue();
+				Action curAction = battleActions[0];
+				battleActions.RemoveAt(0);
 				DialogueController.instance.OneLiner("Narrator", curAction.Execute(), ContinueDialogue);
 				yield return new WaitUntil(() => shouldContinue == true);
 			}
@@ -139,7 +150,7 @@ namespace TMG.GMTK2020
 			switch (BattleStateMachine.instance.curBattleState)
 			{
 				case BattleState.PlayerActionPlayback:
-					BattleStateMachine.instance.ChangeState(BattleState.EnemyActionSelect);
+					BattleStateMachine.instance.ChangeState(BattleState.PostPlayerActionPlayback);
 					break;
 
 				case BattleState.EnemyActionPlayback:
