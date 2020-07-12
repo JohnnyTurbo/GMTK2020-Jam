@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace TMG.GMTK2020 
 {
+	public enum HealthActionTypes { Attack, Heal}
+
     public class Action
     {
         public Character source, target;
@@ -18,20 +21,32 @@ namespace TMG.GMTK2020
     public class HealthAction : Action
 	{
 		private int amount;
+		private HealthActionTypes healthActionType;
 
-		public HealthAction(Character _source, Character _target, int _amount, string _actionName)
+		public HealthAction(Character _source, Character _target, int _amount, HealthActionTypes _healthActionType)
 		{
-			amount = _amount;
 			target = _target;
 			source = _source;
-			actionName = _actionName;
+			healthActionType = _healthActionType;
+			switch (healthActionType)
+			{
+				case HealthActionTypes.Attack:
+					amount = -_amount;
+					actionName = "Attack";
+					break;
+
+				case HealthActionTypes.Heal:
+					amount = _amount;
+					actionName = "Heal";
+					break;
+			}
 		}
 
 		public override string Execute()
 		{
 			target?.ModifyHealth(source, amount);
-			Debug.Log("Source: " + source.gameObject.name + " Target: " + target.gameObject.name + " Amount: " + amount);
-			return $"{source.charName} {actionName}ed {target.charName} for {amount} hit points!";
+			//Debug.Log("Source: " + source.gameObject.name + " Target: " + target.gameObject.name + " Amount: " + amount);
+			return $"{source.charName} {actionName}ed {target.charName} for {Math.Abs(amount)} hit points!";
 		}
 	}
 

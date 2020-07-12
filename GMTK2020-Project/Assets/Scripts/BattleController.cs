@@ -6,15 +6,17 @@ using UnityEngine;
 
 namespace TMG.GMTK2020 
 {
-    public class BattleController : MonoBehaviour
+	public enum VictoryStatus { StillPlaying, Victory, Defeat }
+
+	public class BattleController : MonoBehaviour
     {
         public static BattleController instance;
 
         public List<Character> battleCharacters;
+		public VictoryStatus curVictoryStatus;
 
         private List<Action> battleActions;
 		private Action curAction;
-
 		private Camera mainCamera;
 		private bool shouldContinue;
 
@@ -23,6 +25,7 @@ namespace TMG.GMTK2020
 			instance = this;
 			battleActions = new List<Action>();
 			mainCamera = Camera.main;
+			curVictoryStatus = VictoryStatus.StillPlaying;
 		}
 
 		private void Update()
@@ -68,8 +71,7 @@ namespace TMG.GMTK2020
 					break;
 
 				case BattleState.PostPlayerActionPlayback:
-					//CheckForDeadUnits();
-					BattleStateMachine.instance.ChangeState(BattleState.EnemyActionSelect);
+					CheckWinLoseState(BattleState.EnemyActionSelect);
 					break;
 
 				case BattleState.EnemyActionSelect:
@@ -82,6 +84,33 @@ namespace TMG.GMTK2020
 					break;
 
 				case BattleState.EnemyActionPlayback:
+					break;
+
+				case BattleState.PostEnemyActionPlayback:
+					CheckWinLoseState(BattleState.SetupPlayerTurn);
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		private void CheckWinLoseState(BattleState nextState)
+		{
+			switch (curVictoryStatus)
+			{
+				case VictoryStatus.StillPlaying:
+					BattleStateMachine.instance.ChangeState(nextState);
+					break;
+
+				case VictoryStatus.Victory:
+					DialogueController.instance.OneLiner("Narrator", "YOU WON!!");
+					BattleStateMachine.instance.ChangeState(BattleState.GameOver);
+					break;
+
+				case VictoryStatus.Defeat:
+					DialogueController.instance.OneLiner("Narrator", "YOU LOST!!");
+					BattleStateMachine.instance.ChangeState(BattleState.GameOver);
 					break;
 
 				default:
@@ -137,7 +166,7 @@ namespace TMG.GMTK2020
 
 		public IEnumerator ExecuteActions()
 		{
-			Debug.Log("Executing actions");
+			//Debug.Log("Executing actions");
             while(battleActions.Count > 0)
 			{
 				shouldContinue = false;
@@ -154,7 +183,7 @@ namespace TMG.GMTK2020
 					break;
 
 				case BattleState.EnemyActionPlayback:
-					BattleStateMachine.instance.ChangeState(BattleState.SetupPlayerTurn);
+					BattleStateMachine.instance.ChangeState(BattleState.PostEnemyActionPlayback);
 					break;
 			}
 		}

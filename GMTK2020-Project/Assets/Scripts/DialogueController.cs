@@ -143,6 +143,13 @@ namespace TMG.GMTK2020
             SetupExample2Dialogue();
         }
 
+        public void OneLiner(string speakerName, string line)
+        {
+            endDialogue = null;
+            curDialogueObject = new DialogueObject(speakerName, line);
+            ShowDialogue(curDialogueObject);
+        }
+
         public void OneLiner(string speakerName, string line, EndDialogue _endDialogue)
 		{
             endDialogue = _endDialogue;
@@ -195,6 +202,7 @@ namespace TMG.GMTK2020
         /// <param name="line">Curremt line that shoudl be displayed</param>
         void ShowDialogue(DialogueObject line)
         {
+            //Debug.Log("Show dialogue");
             dialogueCanvas.SetActive(true);
             dialogueInputField.gameObject.SetActive(false);
             speakerNameText.text = line.speakerName;
@@ -234,6 +242,7 @@ namespace TMG.GMTK2020
             {
                 return;
             }
+            //Debug.Log($"{dialogueIndex} {currentConversation.Count}");
             dialogueIndex++;
             if (dialogueIndex >= currentConversation.Count)
             {
@@ -271,7 +280,7 @@ namespace TMG.GMTK2020
         /// </summary>
         public void HideDialogue()
         {
-            Debug.Log("HideDialogue()");
+            //Debug.Log("HideDialogue()");
             speakerNameText.text = "";
             dialogueText.text = "";
             dialogueCanvas.SetActive(false);

@@ -7,7 +7,6 @@ namespace TMG.GMTK2020
 {
 	public class Enemy : Character
 	{
-
 		protected override void StateChanged(BattleState newState)
 		{
 			base.StateChanged(newState);
@@ -28,10 +27,16 @@ namespace TMG.GMTK2020
 			if(BattleController.instance.battleCharacters.FirstOrDefault<Character>(c => c is Player)is Player foundP)
 			{
 				characterAction.target = foundP;
-				Debug.Log("Found player");
+				//Debug.Log("Found player");
 			}
 			BattleController.instance.AddAction(characterAction);
 			//BattleStateMachine.instance.ChangeState(BattleState.EnemyActionPlayback);
+		}
+
+		public override void CharacterDead()
+		{
+			base.CharacterDead();
+			BattleController.instance.curVictoryStatus = VictoryStatus.Victory;
 		}
 	}
 }

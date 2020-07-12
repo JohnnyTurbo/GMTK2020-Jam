@@ -17,6 +17,8 @@ namespace TMG.GMTK2020
 								EnemyActionSelect,
 								PreEnemyActionPlayback,
 								EnemyActionPlayback,
+								PostEnemyActionPlayback,
+								GameOver,
 								Cutscene,
 								None
 							}

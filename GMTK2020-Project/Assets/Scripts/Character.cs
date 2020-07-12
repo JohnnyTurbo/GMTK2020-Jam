@@ -14,6 +14,7 @@ namespace TMG.GMTK2020
 		public bool isControllable;
 		public Action characterAction;
 		public GameObject healthBarGO, controlBarGO, actionButtonGO;
+		public HealthActionTypes actionType;
 
 		public Dictionary<string, Stat> charStats = new Dictionary<string, Stat>();
 
@@ -36,7 +37,7 @@ namespace TMG.GMTK2020
 
 		protected virtual void SetupAction()
 		{
-			characterAction = new HealthAction(this, null, actionAmount, "Attack");
+			characterAction = new HealthAction(this, null, actionAmount, actionType);
 		}
 
 		protected virtual void StateChanged(BattleState newState)
@@ -63,11 +64,8 @@ namespace TMG.GMTK2020
 			}			
 		}
 
-		public void CharacterDead()
+		public virtual void CharacterDead()
 		{
-			//Debug.Log("Character: " + gameObject.name + " ran out of health!");
-			string playerDiedStr = $"{charName} ran out of health!";
-			DialogueController.instance.OneLiner("Narrator", playerDiedStr, SceneManager.instance.ReloadScene);
 			BattleController.instance.RemoveCharacter(this);
 		}
 	}

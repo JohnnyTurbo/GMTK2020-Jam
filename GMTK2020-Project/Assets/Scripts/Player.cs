@@ -6,6 +6,7 @@ namespace TMG.GMTK2020
 {
     public class Player : Character
     {
+		/*
 		protected override void StateChanged(BattleState newState)
 		{
 			base.StateChanged(newState);
@@ -19,10 +20,12 @@ namespace TMG.GMTK2020
 					break;
 			}
 		}
+		*/
 
-		private void Update()
+		public override void CharacterDead()
 		{
-			
+			base.CharacterDead();
+			BattleController.instance.curVictoryStatus = VictoryStatus.Defeat;
 		}
 	}
 }

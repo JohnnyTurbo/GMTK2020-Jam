@@ -89,6 +89,8 @@ namespace TMG.GMTK2020
 				newHealthBarSlider.minValue = 0;
 				newHealthBarSlider.value = curChar.charStats["Health"].cur;
 
+				if(curChar is NeutralUnit) { continue; }
+
 				GameObject newControlBarGO = Instantiate(controlBarPrefab);
 				newControlBarGO.transform.SetParent(worldCanvas.transform, false);
 				newControlBarGO.transform.position = curChar.transform.position + controlBarOffset;
